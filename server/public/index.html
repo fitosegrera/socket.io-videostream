@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<!-- manifest="webcache.manifest" -->
+
+<head>
+    <meta charset="utf-8">
+    <title>stream</title>
+    <script src="//localhost:3000/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <div id="stream-container">
+        <canvas id="stream" width="600" height="500" style="border:solid;"></canvas>
+    </div>
+    <script>
+    var socket = io();
+
+    var ctx = document.getElementById('stream').getContext('2d');
+    socket.on('connect', function() {
+        console.log('connected');
+    });
+    socket.on("imgRender", function(info) {
+        //console.log(info);
+        if (info.image) {
+            var img = new Image();
+            img.src = 'data:image/jpeg;base64,' + info.buffer;
+            ctx.drawImage(img, 0, 0);
+        }
+    });
+    </script>
+</body>
+
+</html>
